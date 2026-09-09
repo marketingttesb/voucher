@@ -12,28 +12,58 @@
 		position:relative;
 		/*background-image: url("e-voucher-bg.jpg");
 		background-repeat: no-repeat;*/
+		overflow:hidden;
 		z-index:0;
 	}
 	#client{
 		width:230px;
-		height:24px;
 		position:absolute;
 		left:40px;
 		top:100px;
 		color:#FFFFFF;
 		font-size:12px;
+		font-family:Arial, sans-serif;
+		margin:0;
+		padding:0;
+		border:none;
+		outline:none;
+		box-sizing:border-box;
 		z-index:100;
 	}
 	#date{
 		width:100px;
 		height:24px;
 		position:absolute;
-		left:180px;
+		left:170px;
 		top:440px;
+		margin:0;
+		padding:0;
+		border:none;
+		outline:none;
+		box-sizing:border-box;
+		font-family:Arial, sans-serif;
+		font-size:12px;
+		z-index:100;
+	}
+	#bg{
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		object-fit:contain;
 	}
 	#toolbar{
-		float:right;
-		margin:10px 20px;
+		position:absolute;
+		top:10px;
+		right:20px;
+		display:flex;
+		align-items:center;
+		gap:16px;
+		padding:10px 16px;
+		background:#e0e0e0;
+		border-radius:6px;
+		z-index:200;
 	}
 	#copyBtn{
 		padding:8px 16px;
@@ -41,12 +71,10 @@
 		cursor:pointer;
 	}
 	#status{
-		clear:both;
+		flex:1;
 		text-align:right;
-		padding-right:20px;
 		font-size:13px;
 		color:#333;
-		margin-top:5px;
 	}
 	@media print { 
 	 #client { 
@@ -59,8 +87,8 @@
 
 <div id="toolbar">
 <button id="copyBtn" onclick="copyVoucher()">Copy</button>
-</div>
 <div id="status"></div>
+</div>
 
 <div id="voucher">
 <div id="client" contenteditable="true">Client Name</div>
@@ -70,6 +98,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+document.getElementById('date').valueAsDate = new Date();
 function saveAsImage(canvas) {
 	var link = document.createElement('a');
 	link.download = 'e-voucher.png';
@@ -84,7 +113,7 @@ async function copyVoucher() {
 		if (typeof html2canvas === 'undefined') {
 			throw new Error('html2canvas tidak dimuat, semak internet');
 		}
-		var canvas = await html2canvas(document.getElementById('voucher'));
+		var canvas = await html2canvas(document.getElementById('voucher'), { scale: 1 });
 		if (typeof ClipboardItem === 'undefined') {
 			saveAsImage(canvas);
 			status.textContent = 'Browser tak sokong copy, PNG dimuat turun';
